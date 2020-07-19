@@ -1,0 +1,167 @@
+# Labels to add to all resources and selectors.
+commonLabels:
+  app.kubernetes.io/instance: kubecf
+  app.kubernetes.io/managed-by: Tiller
+  app.kubernetes.io/name: kubecf
+  app.kubernetes.io/version: v2.2.1
+  helm.sh/chart: kubecf-v2.2.1
+
+# Each entry in this list results in the creation of
+# one ConfigMap resource (it's a generator of n maps).
+configMapGenerator:
+- name: cf-deployment
+- literals:
+  - ops=
+  name: user-provided-properties
+
+# List of resource files that kustomize reads, modifies
+# and emits as a YAML string
+resources:
+- kubecf-boshdeployment.yaml
+- kubecf-default-psp-rb.yaml
+- kubecf-default-psp-role.yaml
+- kubecf-default-psp.yaml
+- router-public-svc.yaml
+- ssh-proxy-public-svc.yaml
+- tcp-router-public-svc.yaml
+
+# Each entry in this list results in the creation of
+# one Secret resource (it's a generator of n secrets).
+secretGenerator:
+- name: var-k8s-host-url
+  type: Opaque
+- name: var-k8s-node-ca
+  type: Opaque
+- name: var-k8s-service-token
+  type: Opaque
+- name: var-k8s-service-username
+  type: Opaque
+- name: var-system-domain
+  type: Opaque
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/bits-service
+  newTag: bits-1.0.15-15.1.6.2.220-24.2
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/event-reporter
+  newTag: 1.5.0
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/metrics-collector
+  newTag: 1.5.0
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/opi
+  newTag: 1.5.0
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/recipe-downloader
+  newTag: 1.5.0-24.1
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/recipe-executor
+  newTag: 1.5.0-24.1
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/recipe-uploader
+  newTag: 1.5.0-24.1
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/route-collector
+  newTag: 1.5.0
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/route-pod-informer
+  newTag: 1.5.0
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/route-statefulset-informer
+  newTag: 1.5.0
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/staging-reporter
+  newTag: 1.5.0
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/suse-binary-buildpack
+  newTag: SLE_15_SP1-25.1-7.0.0_374.gb8e8e6af-1.0.36.1
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/suse-dotnet-core-buildpack
+  newTag: SLE_15_SP1-25.1-7.0.0_374.gb8e8e6af-2.3.9.1
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/suse-go-buildpack
+  newTag: SLE_15_SP1-25.1-7.0.0_374.gb8e8e6af-1.9.11.1
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/suse-java-buildpack
+  newTag: SLE_15_SP1-25.1-7.0.0_374.gb8e8e6af-4.29.1.1
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/suse-nginx-buildpack
+  newTag: SLE_15_SP1-25.1-7.0.0_374.gb8e8e6af-1.1.7.1
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/suse-nodejs-buildpack
+  newTag: SLE_15_SP1-25.1-7.0.0_374.gb8e8e6af-1.7.17.1
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/suse-php-buildpack
+  newTag: SLE_15_SP1-25.1-7.0.0_374.gb8e8e6af-4.4.12.1
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/suse-python-buildpack
+  newTag: SLE_15_SP1-25.1-7.0.0_374.gb8e8e6af-1.7.12.1
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/suse-ruby-buildpack
+  newTag: SLE_15_SP1-25.1-7.0.0_374.gb8e8e6af-1.8.15.1
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cap-staging/suse-staticfile-buildpack
+  newTag: SLE_15_SP1-25.1-7.0.0_374.gb8e8e6af-1.5.5.1
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/app-autoscaler
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-3.0.0
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/binary-buildpack
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-1.0.36
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/brain-tests
+  newTag: SLE_15_SP1-23.24-7.0.0_374.gb8e8e6af-v0.0.11
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/capi
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-1.91.0
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/cf-acceptance-tests
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-0.0.13
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/cf-cli
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-1.25.0
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/cf-networking
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-2.28.0
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/cf-smoke-tests
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-40.0.127
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/cf-syslog-drain
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-10.2.11
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/cflinuxfs3
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-0.167.0
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/credhub
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-2.5.11
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/diego
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-2.44.0
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/dotnet-core-buildpack
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-2.3.6
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/garden-runc
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-1.19.10
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/go-buildpack
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-1.9.7
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/java-buildpack
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-4.26
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/log-cache
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-2.6.8
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/loggregator
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-106.3.8
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/loggregator-agent
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-5.3.7
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/nats
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-33
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/nginx-buildpack
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-1.1.5
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/nodejs-buildpack
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-1.7.13
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/php-buildpack
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-4.4.8
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/postgres
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-39
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/pxc
+  newTag: 0.9.4
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/python-buildpack
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-1.7.8
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/r-buildpack
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-1.1.1
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/routing
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-0.198.0
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/ruby-buildpack
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-1.8.11
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/silk
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-2.28.0
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/sle15
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-10.93
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/staticfile-buildpack
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-1.5.4
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/statsd-injector
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-1.11.15
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/sync-integration-tests
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-v0.0.3
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/cfcontainerization/uaa
+  newTag: SLE_15_SP1-23.21-7.0.0_374.gb8e8e6af-74.15.0
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/eirini/eirinix-loggregator-bridge
+  newTag: v0.0.0-0.gfd70cac
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/eirini/eirinix-persi
+  newTag: v0.0.0-67.ge68b3d3
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/eirini/eirinix-persi-broker
+  newTag: v0.0.0-g47355df
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/eirini/eirinix-persi-broker-setup
+  newTag: v0.0.0-ge2799d8
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/eirini/eirinix-ssh
+  newTag: v0.0.0-0.ge2ed1ab
+- name: artifacts.mastercard.int/docker-internal-unstable/mc-docker-pipeline/kubernetes/base-images/eirini/eirinix-ssh-proxy-setup
+  newTag: v0.0.0-ge2799d8
